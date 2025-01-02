@@ -1,0 +1,76 @@
+{
+  "一费卡":{
+    "阿木木": "image/1-amumu.png",
+    "爆爆": "image/1-baobao.png",
+    "刀妹": "image/1-daomei.png",
+    "德莱文": "image/1-delaiwen.png",
+    "光辉": "image/1-guanghui.png",
+    "婕拉": "image/1-jiela.png",
+    "巨魔": "image/1-jumo.png",
+    "辛吉德": "image/1-lianjin.png",
+    "麦迪": "image/1-maidi.png",
+    "莫甘娜": "image/1-moganna.png",
+    "诺手": "image/1-nuoshou.png",
+    "薇古斯": "image/1-vex.png",
+    "斯特卜": "image/1-sitebu.png",
+    "维奥莱": "image/1-xiaowei.png"
+  },
+  "二费卡":{
+    "阿卡丽": "image/2-akali.png",
+    "螃蟹": "image/2-ejiate.png",
+    "范德尔": "image/2-fandeer.png",
+    "青钢影": "image/2-kamier.png",
+    "梦魇": "image/2-moteng.png",
+    "瑞尔": "image/2-ruier.png",
+    "瑟提": "image/2-seti.png",
+    "曙光": "image/2-shuguang.png",
+    "小炮": "image/2-xiaopao.png",
+    "吸血鬼": "image/2-xixuegui.png",
+    "列娜塔": "image/2-lienata.png",
+    "炸弹人": "image/2-zhadanren.png",
+    "泽丽": "image/2-zeli.png"
+  },
+  "三费卡":{
+    "船长": "image/3-chuanzhang.png",
+    "刀疤": "image/3-daoba.png",
+    "大嘴": "image/3-dazui.png",
+    "EZ": "image/3-ez.png",
+    "机器人": "image/3-jiqiren.png",
+    "卡牌": "image/3-kapai.png",
+    "洛里斯": "image/3-luolisi.png",
+    "娜美": "image/3-namei.png",
+    "努努": "image/3-nunu.png",
+    "任妮": "image/3-renni.png",
+    "蛇女": "image/3-shenv.png",
+    "史密奇": "image/3-shimiqi.png",
+    "乌鸦": "image/3-wuya.png"
+  },
+  "四费卡":{
+    "艾克": "image/4-aike.png",
+    "安备撒": "image/4-anbeisa.png",
+    "大头": "image/4-datou.png",
+    "飞机": "image/4-feiji.png",
+    "盖伦": "image/4-gailun.png",
+    "老鼠": "image/4-laoshu.png",
+    "蒙多": "image/4-mengduo.png",
+    "希尔科": "image/4-sierke.png",
+    "尉": "image/4-wei.png",
+    "蜘蛛": "image/4-zhizhu.png",
+    "佐伊": "image/4-zuoyi.png"
+  },
+  "五费卡":{
+    "杰斯": "image/5-jiesi.png",
+    "金克丝": "image/5-jinx.png",
+    "兰博": "image/5-lanbo.png",
+    "蚂蚱": "image/5-maza.png",
+    "女警": "image/5-nvjing.png",
+    "赛维卡": "image/5-saiweika.png",
+    "铁男": "image/5-tienan.png",
+    "妖姬": "image/5-yaoji.png"
+  },
+  "六费卡":{
+    "狼人": "image/6-langren.png",
+    "维克多": "image/6-维克托.png",
+    "梅尔": "image/6-meier.png"
+  }
+}
