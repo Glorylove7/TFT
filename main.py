@@ -11,6 +11,14 @@ import os
 from tkinter import font
 import sys
 from concurrent.futures import ThreadPoolExecutor
+import keyboard
+
+pause=True
+
+
+
+
+
 
 def resource_path(relative_path):
     if hasattr(sys, '_MEIPASS'):
@@ -73,9 +81,9 @@ def is_greyscale_image(image, threshold=0.8, tolerance=20):
 def click(x, y):
     win32api.SetCursorPos((x, y))
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0)
+    time.sleep(0.01)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
-    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0)
-    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
+    time.sleep(0.01)
 
 # 更新全局 TEMPLATES
 def update_templates(selected_heroes, all_heroes):
@@ -89,6 +97,16 @@ def update_templates(selected_heroes, all_heroes):
 
 
 def create_hero_selection_gui():
+    def toggle_false():
+        global pause
+        pause=False
+
+    def toggle_true():
+        global pause
+        pause=True
+
+    keyboard.add_hotkey('f1',toggle_false)
+    keyboard.add_hotkey('f2',toggle_true)
     all_heroes = load_all_heroes()
     selected_heroes = []
 
@@ -160,7 +178,11 @@ def match_all_heroes(templates, screenshot):
 
 # 主循环
 def main_loop():
+    # global pause
     while running:
+        if pause:
+            time.sleep(0.1)
+            continue
         screenshot = capture_screen(ROI)
         results = match_all_heroes(TEMPLATES, screenshot)
         for hero, (match, matched_image) in results.items():
@@ -175,6 +197,7 @@ def main_loop():
 running=True
 # 启动 GUI 和主循环的线程
 if __name__ == "__main__":
-    gui_thread = threading.Thread(target=create_hero_selection_gui)
-    gui_thread.start()
-    main_loop()
+    detection_thread = threading.Thread(target=main_loop, daemon=True)
+    detection_thread.start()
+
+    create_hero_selection_gui()
