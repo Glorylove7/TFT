@@ -1,5 +1,3 @@
-from time import sleep
-
 import cv2
 import numpy as np
 import mss
@@ -14,10 +12,6 @@ from tkinter import font
 import sys
 from concurrent.futures import ThreadPoolExecutor
 import keyboard
-import pyautogui
-from multiprocessing import Process
-
-
 
 def resource_path(relative_path):
     if hasattr(sys, '_MEIPASS'):
@@ -175,11 +169,11 @@ def create_hero_selection_gui():
     all_heroes = load_all_heroes()
     selected_heroes = []
 
-    def on_select(hero, var):
-        if var.get():
-            selected_heroes.append(hero)
+    def on_select(hero1, var1):
+        if var1.get():
+            selected_heroes.append(hero1)
         else:
-            selected_heroes.remove(hero)
+            selected_heroes.remove(hero1)
         update_templates(selected_heroes, all_heroes)
     def on_mouse_wheel(event):
         canvas.yview_scroll(int(-1*(event.delta/120)), "units")
@@ -263,7 +257,7 @@ def main_loop():
 running=True
 # 启动 GUI 和主循环的线程
 if __name__ == "__main__":
-    roi=None
+    roi= {}
     captured=False
     create_capture_gui()
     if roi:
