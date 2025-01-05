@@ -1,3 +1,5 @@
+from time import sleep
+
 import cv2
 import numpy as np
 import mss
@@ -12,11 +14,8 @@ from tkinter import font
 import sys
 from concurrent.futures import ThreadPoolExecutor
 import keyboard
-
-pause=True
-
-
-
+import pyautogui
+from multiprocessing import Process
 
 
 
@@ -26,9 +25,75 @@ def resource_path(relative_path):
         return os.path.join(sys._MEIPASS, relative_path)
     return os.path.join(os.path.abspath("."), relative_path)
 
-# 配置文件路径
-TEMPLATES_FILE = resource_path("templates.json")
-ROI = {"top": 900, "left": 0, "width": 2560, "height": 550}
+class ScreenCapture:
+    def __init__(self):
+        self.root1 = tk.Tk()
+        self.start_x = None
+        self.start_y = None
+        self.rect_id = None
+        self.roi = None
+
+        # 创建全屏透明窗口
+        self.root1.attributes("-fullscreen", True)
+        self.root1.attributes("-alpha", 0.3)  # 设置窗口透明度
+        self.root1.configure(bg="gray")       # 背景色
+        self.canvas = tk.Canvas(self.root1, cursor="cross")
+        self.canvas.pack(fill=tk.BOTH, expand=tk.TRUE)
+
+        # 绑定鼠标事件
+        self.canvas.bind("<ButtonPress-1>", self.on_mouse_down)
+        self.canvas.bind("<B1-Motion>", self.on_mouse_drag)
+        self.canvas.bind("<ButtonRelease-1>", self.on_mouse_up)
+
+    def on_mouse_down(self, event):
+        self.start_x = event.x
+        self.start_y = event.y
+        self.rect_id = self.canvas.create_rectangle(
+            self.start_x, self.start_y, self.start_x, self.start_y,
+            outline="red", width=2
+        )
+
+    def on_mouse_drag(self, event):
+        self.canvas.coords(self.rect_id, self.start_x, self.start_y, event.x, event.y)
+
+    def on_mouse_up(self, event):
+        end_x, end_y = event.x, event.y
+        self.roi = {
+            "top": min(self.start_y, end_y),
+            "left": min(self.start_x, end_x),
+            "width": abs(self.start_x - end_x),
+            "height": abs(self.start_y - end_y)
+        }
+        self.root1.destroy()
+
+    def run(self):
+        self.root1.mainloop()
+        return self.roi
+
+def create_capture_gui():
+    global captured
+    global roi
+    window=tk.Tk()
+    window.iconbitmap(resource_path('image/avatar.ico'))
+    window.title("请截图")
+    window.geometry("200x100")
+    window.attributes('-topmost', 1)
+    def capture_screenshot():
+        def run_capture():
+            global captured
+            global roi
+            capture = ScreenCapture()
+            roi = capture.run()
+            captured = True
+            window.after(100,window.destroy)
+        threading.Thread(target=run_capture).start()
+    capture_button = tk.Button(window, text="截屏选择牌库", command=capture_screenshot)
+    capture_button.pack(pady=20)
+    window.mainloop()
+
+
+
+
 
 # 加载所有英雄模板
 def load_all_heroes():
@@ -179,6 +244,7 @@ def match_all_heroes(templates, screenshot):
 # 主循环
 def main_loop():
     # global pause
+    global ROI
     while running:
         if pause:
             time.sleep(0.1)
@@ -197,7 +263,15 @@ def main_loop():
 running=True
 # 启动 GUI 和主循环的线程
 if __name__ == "__main__":
-    detection_thread = threading.Thread(target=main_loop, daemon=True)
-    detection_thread.start()
+    roi=None
+    captured=False
+    create_capture_gui()
+    if roi:
+        ROI = {"top":roi["top"],"left":roi["left"],"width":roi["width"],"height":roi["height"]}
+    pause=True
 
-    create_hero_selection_gui()
+    if captured:
+        TEMPLATES_FILE = resource_path("templates.json")
+        detection_thread = threading.Thread(target=main_loop, daemon=True)
+        detection_thread.start()
+        create_hero_selection_gui()
