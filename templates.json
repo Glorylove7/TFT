@@ -20,7 +20,7 @@
     "螃蟹": "image/2-ejiate.png",
     "范德尔": "image/2-fandeer.png",
     "青钢影": "image/2-kamier.png",
-    "梦魇": "image/2-moteng.png",
+    "梦魇": "image/2-mengyan.png",
     "瑞尔": "image/2-ruier.png",
     "瑟提": "image/2-seti.png",
     "曙光": "image/2-shuguang.png",
@@ -56,6 +56,7 @@
     "希尔科": "image/4-sierke.png",
     "尉": "image/4-wei.png",
     "蜘蛛": "image/4-zhizhu.png",
+    "俄洛依": "image/4-eluoyi.png",
     "佐伊": "image/4-zuoyi.png"
   },
   "五费卡":{
@@ -70,7 +71,7 @@
   },
   "六费卡":{
     "狼人": "image/6-langren.png",
-    "维克多": "image/6-维克托.png",
+    "维克多": "image/6-weiketuo.png",
     "梅尔": "image/6-meier.png"
   }
 }

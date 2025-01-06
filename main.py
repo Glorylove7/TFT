@@ -108,7 +108,7 @@ def capture_screen(region):
         return cv2.cvtColor(np.array(screenshot), cv2.COLOR_BGRA2RGB)
         # return cv2.cvtColor(np.array(screenshot), cv2.COLOR_BGRA2GRAY)
 
-def match_hero(template_path, screenshot, threshold=0.6):
+def match_hero(template_path, screenshot, threshold=0.8):
     template = cv2.imread(template_path, cv2.IMREAD_COLOR)
     if template is None:
         raise ValueError(f"无法加载模板图片：{template_path}")
