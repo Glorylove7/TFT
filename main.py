@@ -115,10 +115,13 @@ def match_hero(template_path, screenshot, threshold=0.8):
     # 模板匹配
     result = cv2.matchTemplate(screenshot, template, cv2.TM_CCOEFF_NORMED)
     _, max_val, _, max_loc = cv2.minMaxLoc(result)
-
     if max_val > threshold:
         h, w,_ = template.shape
         matched_image = screenshot[max_loc[1]:max_loc[1] + h, max_loc[0]:max_loc[0] + w]
+        max_loc_list=list(max_loc)
+        max_loc_list[0]=max_loc[0]+w//2
+        max_loc_list[1]=max_loc[1]+h//2
+        max_loc=tuple(max_loc_list)
         return max_loc, matched_image
     else:
         return None, None
@@ -249,7 +252,7 @@ def main_loop():
             if match:
                 if is_greyscale_image(matched_image):
                     break
-                x, y = match[0] + ROI["left"]+100, match[1] + ROI["top"]+100
+                x, y = match[0] + ROI["left"], match[1] + ROI["top"]
                 click(x, y)
                 time.sleep(0.1)
                 break
