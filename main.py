@@ -124,7 +124,7 @@ def match_hero(template_path, screenshot, threshold=0.8):
     result = cv2.matchTemplate(screenshot, template, cv2.TM_CCOEFF_NORMED)
     _, max_val, _, max_loc = cv2.minMaxLoc(result)
     if max_val > threshold:
-        print(template_path,max_val)
+        # print(template_path,max_val)
         h, w,_ = template.shape
         matched_image = screenshot[max_loc[1]:max_loc[1] + h, max_loc[0]:max_loc[0] + w]
         max_loc_list=list(max_loc)
