@@ -12,6 +12,8 @@ from tkinter import font
 import sys
 from concurrent.futures import ThreadPoolExecutor
 import keyboard
+from PIL import Image
+import io
 
 def resource_path(relative_path):
     if hasattr(sys, '_MEIPASS'):
@@ -29,8 +31,8 @@ class ScreenCapture:
 
         # 创建全屏透明窗口
         self.root1.attributes("-fullscreen", True)
-        self.root1.attributes("-alpha", 0.3)  # 设置窗口透明度
-        self.root1.configure(bg="gray")       # 背景色
+        self.root1.attributes("-alpha", 0.3)
+        self.root1.configure(bg="gray")
         self.canvas = tk.Canvas(self.root1, cursor="cross")
         self.canvas.pack(fill=tk.BOTH, expand=tk.TRUE)
 
@@ -100,13 +102,19 @@ def load_all_heroes():
 
 # 英雄模板路径
 TEMPLATES = {}
-templates_changed = threading.Event()  # 用于检测模板改变的事件
+templates_changed = threading.Event()
 
 def capture_screen(region):
     with mss.mss() as sct:
         screenshot = sct.grab(region)
-        return cv2.cvtColor(np.array(screenshot), cv2.COLOR_BGRA2RGB)
-        # return cv2.cvtColor(np.array(screenshot), cv2.COLOR_BGRA2GRAY)
+        img = np.array(screenshot)
+        img_rgb = cv2.cvtColor(img, cv2.COLOR_BGRA2RGB)
+        pil_image = Image.fromarray(img_rgb)
+
+        img_byte_arr = io.BytesIO()
+        pil_image.save(img_byte_arr, format="PNG")
+        img_byte_arr = img_byte_arr.getvalue()
+        return img_byte_arr
 
 def match_hero(template_path, screenshot, threshold=0.8):
     template = cv2.imread(template_path, cv2.IMREAD_COLOR)
@@ -116,6 +124,7 @@ def match_hero(template_path, screenshot, threshold=0.8):
     result = cv2.matchTemplate(screenshot, template, cv2.TM_CCOEFF_NORMED)
     _, max_val, _, max_loc = cv2.minMaxLoc(result)
     if max_val > threshold:
+        print(template_path,max_val)
         h, w,_ = template.shape
         matched_image = screenshot[max_loc[1]:max_loc[1] + h, max_loc[0]:max_loc[0] + w]
         max_loc_list=list(max_loc)
@@ -247,6 +256,7 @@ def main_loop():
             time.sleep(0.1)
             continue
         screenshot = capture_screen(ROI)
+        screenshot = cv2.imdecode(np.frombuffer(screenshot, np.uint8), cv2.IMREAD_COLOR)
         results = match_all_heroes(TEMPLATES, screenshot)
         for hero, (match, matched_image) in results.items():
             if match:
